@@ -1,14 +1,11 @@
 import axios from 'axios'
 
-function SearchResultCard({ result }) {
-  const { title, previewLink, imageLinks, description } = result.volumeInfo
+function SavedBookCard({ book }) {
+  const { _id, title, previewLink, imageLink, description } = book
 
-  const saveSearch = () => {
-    axios.post('/api/books', {
-      title: title,
-      previewLink: previewLink,
-      imageLink: imageLinks.thumbnail,
-      description: description,
+  const deleteBook = () => {
+    axios.delete('/api/books/' + _id).then((response) => {
+      window.location.reload()
     })
   }
 
@@ -28,20 +25,17 @@ function SearchResultCard({ result }) {
             View
           </a>
           <button
-            onClick={saveSearch}
+            onClick={deleteBook}
             type="button"
             className="btn btn-secondary"
           >
-            Save
+            Delete
           </button>
         </div>
       </div>
       <div className="row">
         <div className="col-md-3">
-          <img
-            alt="book"
-            src={imageLinks.thumbnail ? imageLinks.thumbnail : '#'}
-          />
+          <img alt="book" src={imageLink || '#'} />
         </div>
         <div className="col-md-9">
           <p>{description}</p>
@@ -51,4 +45,4 @@ function SearchResultCard({ result }) {
   )
 }
 
-export default SearchResultCard
+export default SavedBookCard

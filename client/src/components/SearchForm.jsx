@@ -1,4 +1,16 @@
-function SearchForm() {
+import { useState } from 'react'
+import axios from 'axios'
+function SearchForm({ resultHandler }) {
+  const [searchValue, setSearchValue] = useState('')
+
+  const searchGoogle = () => {
+    axios('/api/google', { params: { query: searchValue } }).then(
+      (response) => {
+        resultHandler(response.data)
+      }
+    )
+  }
+
   return (
     <div className="col-md-12">
       <div className="card">
@@ -6,6 +18,8 @@ function SearchForm() {
           <h5 className="card-title">Search Books</h5>
           <div className="input-group mb-3">
             <input
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               type="text"
               className="form-control"
               placeholder="Recipient's username"
@@ -13,7 +27,11 @@ function SearchForm() {
               aria-describedby="basic-addon2"
             />
             <div className="input-group-append">
-              <button className="btn btn-outline-secondary" type="button">
+              <button
+                onClick={searchGoogle}
+                className="btn btn-outline-secondary"
+                type="button"
+              >
                 Search
               </button>
             </div>

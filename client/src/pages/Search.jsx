@@ -1,8 +1,16 @@
+import { useState } from 'react'
+
 import Jumbotron from '../components/Jumbotron'
 import SearchForm from '../components/SearchForm'
 import SearchResultCard from '../components/SearchResultCard'
 
 function Search() {
+  const [searchResults, setSearchResults] = useState([])
+
+  const handleResults = (results) => {
+    setSearchResults(results)
+  }
+
   return (
     <div className="container">
       <Jumbotron
@@ -10,15 +18,11 @@ function Search() {
         text="Search for and Save Books of Interest"
       />
       <div className="row">
-        <SearchForm />
+        <SearchForm resultHandler={handleResults} />
 
         <div className="col-md-12">
-          <SearchResultCard
-            title="harry potter"
-            viewLink="https://google.ca"
-            imgLink="https://cdn4.buysellads.net/uu/1/69037/1596112950-A_ContentfulGraphQL_CarbonAds_260x200.png"
-            description="SOME TEXT"
-          />
+          {searchResults.length &&
+            searchResults.map((result) => <SearchResultCard result={result} />)}
         </div>
       </div>
     </div>
